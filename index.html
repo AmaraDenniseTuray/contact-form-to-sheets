@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <base target="_top">
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contact Form</title>
 
   <style>
@@ -13,22 +13,36 @@
       padding: 20px;
     }
 
+    h1 {
+      text-align: center;
+    }
+
     input,
     textarea {
       width: 100%;
       padding: 12px;
       margin-bottom: 15px;
       box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 5px;
     }
 
     button {
       padding: 12px 20px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
       cursor: pointer;
+    }
+
+    button:hover {
+      background: #0056b3;
     }
 
     #result {
       margin-top: 20px;
-      color: green;
+      font-weight: bold;
     }
   </style>
 </head>
@@ -55,6 +69,7 @@
       name="message"
       placeholder="Your Message"
       rows="5"
+      required
     ></textarea>
 
     <button type="submit">
@@ -65,27 +80,32 @@
   <p id="result"></p>
 
   <script>
+    const scriptURL =
+      'https://script.google.com/macros/s/AKfycbyuILeFo4XWnwpNcpGeeYCkIiANVj2fmBjKg0wM97sNq-Cc3pGHraCzs9wheM4o8uJ74w/exec';
+
     const form = document.getElementById('contactForm');
     const result = document.getElementById('result');
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
 
-      result.innerHTML = 'Sending...';
+      result.style.color = 'black';
+      result.textContent = 'Sending...';
 
-      fetch(window.location.href, {
+      fetch(scriptURL, {
         method: 'POST',
-        body: new FormData(form)
+        body: new FormData(form),
+        mode: 'no-cors'
       })
       .then(() => {
-        result.innerHTML =
-          'Message sent successfully!';
+        result.style.color = 'green';
+        result.textContent = 'Message sent successfully!';
         form.reset();
       })
-      .catch(err => {
-        result.innerHTML =
-          'Error sending message.';
-        console.error(err);
+      .catch(error => {
+        console.error(error);
+        result.style.color = 'red';
+        result.textContent = 'Error sending message.';
       });
     });
   </script>
