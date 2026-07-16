@@ -42,45 +42,33 @@
 
 <p id="result"></p>
 
+
+
 <script>
-
 const scriptURL =
-"https://script.google.com/macros/s/AKfycbwGxUPEGVU2Xc6T7k6Bp_lUM1G1fcRnh82A-VKR0wcMuEGrSsVcDUYBg-qlfseNYbXQTA/exec";
+'https://script.google.com/macros/library/d/1UTUEb4ll-7SrWGfS41qRhp6CIw-Vaqdb_haqk5dKcHSnS6uPcdT7Mo4-/1';
 
-document
-.getElementById("contactForm")
-.addEventListener("submit", function(e){
+const form =
+document.getElementById('contactForm');
 
+form.addEventListener('submit', e => {
   e.preventDefault();
 
-  const data = {
-    name: document.getElementById("name").value,
-    email: document.getElementById("email").value,
-    message: document.getElementById("message").value
-  };
-
-  fetch(scriptURL,{
-    method:"POST",
-    body:JSON.stringify(data)
+  fetch(scriptURL, {
+    method: 'POST',
+    body: new FormData(form)
   })
-  .then(response => response.json())
-  .then(data => {
-    document.getElementById("result")
-      .innerHTML =
-      "Message sent successfully!";
-
-    document.getElementById("contactForm")
-      .reset();
+  .then(response => {
+    document.getElementById('result').innerHTML =
+      'Message sent successfully!';
+    form.reset();
   })
   .catch(error => {
-    document.getElementById("result")
-      .innerHTML =
-      "Something went wrong.";
+    console.error(error);
+    document.getElementById('result').innerHTML =
+      'Error sending message.';
   });
-
 });
-
-</script>
-
+<script>
 </body>
 </html>
