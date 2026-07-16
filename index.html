@@ -1,74 +1,94 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <base target="_top">
+  <meta charset="UTF-8">
   <title>Contact Form</title>
+
   <style>
-    body{
-      font-family: Arial;
-      max-width:600px;
-      margin:auto;
-      padding:40px;
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
     }
 
-    input, textarea{
-      width:100%;
-      padding:10px;
-      margin-bottom:15px;
+    input,
+    textarea {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      box-sizing: border-box;
     }
 
-    button{
-      padding:10px 20px;
+    button {
+      padding: 12px 20px;
+      cursor: pointer;
     }
 
-    #result{
-      margin-top:20px;
-      color:green;
+    #result {
+      margin-top: 20px;
+      color: green;
     }
   </style>
 </head>
 <body>
 
-<h1>Contact Us</h1>
+  <h1>Contact Us</h1>
 
-<form id="contactForm">
-  <input type="text" name="name" required>
-  <input type="email" name="email" required>
-  <textarea name="message"></textarea>
+  <form id="contactForm">
+    <input
+      type="text"
+      name="name"
+      placeholder="Your Name"
+      required
+    >
 
-  <button type="submit">
-    Send Message
-  </button>
-</form>
+    <input
+      type="email"
+      name="email"
+      placeholder="Your Email"
+      required
+    >
 
-<p id="result"></p>
+    <textarea
+      name="message"
+      placeholder="Your Message"
+      rows="5"
+    ></textarea>
 
+    <button type="submit">
+      Send Message
+    </button>
+  </form>
 
+  <p id="result"></p>
 
-<script>
-const scriptURL =
-'https://script.google.com/macros/library/d/1UTUEb4ll-7SrWGfS41qRhp6CIw-Vaqdb_haqk5dKcHSnS6uPcdT7Mo4-/1';
+  <script>
+    const form = document.getElementById('contactForm');
+    const result = document.getElementById('result');
 
-const form =
-document.getElementById('contactForm');
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
 
-form.addEventListener('submit', e => {
-  e.preventDefault();
+      result.innerHTML = 'Sending...';
 
-  fetch(scriptURL, {
-    method: 'POST',
-    body: new FormData(form)
-  })
-  .then(response => {
-    document.getElementById('result').innerHTML =
-      'Message sent successfully!';
-    form.reset();
-  })
-  .catch(error => {
-    console.error(error);
-    document.getElementById('result').innerHTML =
-      'Error sending message.';
-  });
-});
-<script>
+      fetch(window.location.href, {
+        method: 'POST',
+        body: new FormData(form)
+      })
+      .then(() => {
+        result.innerHTML =
+          'Message sent successfully!';
+        form.reset();
+      })
+      .catch(err => {
+        result.innerHTML =
+          'Error sending message.';
+        console.error(err);
+      });
+    });
+  </script>
+
 </body>
 </html>
